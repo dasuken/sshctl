@@ -1,11 +1,11 @@
-package sshctl
+package flagstr
 
 import (
 	"fmt"
 	"strings"
 )
 
-func NewFlagStr(text string) *flagStr {
+func New(text string) *flagStr {
 	return &flagStr{
 		input: text,
 	}
