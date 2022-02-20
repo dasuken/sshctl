@@ -3,7 +3,7 @@ package actions
 import (
 	"errors"
 	"fmt"
-	"github.com/dasuken/sshctl"
+	sshctl2 "github.com/dasuken/sshctl/pkg/sshctl"
 	"github.com/urfave/cli/v2"
 	"os"
 )
@@ -20,7 +20,7 @@ func list(ctx *cli.Context) error {
 		return err
 	}
 
-	client := sshctl.NewClient(configPath)
+	client := sshctl2.NewClient(configPath)
 
 	hosts, err := client.List()
 	if err != nil {

@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/AlecAivazis/survey/v2"
-	"github.com/dasuken/sshctl"
+	sshctl2 "github.com/dasuken/sshctl/pkg/sshctl"
 	"github.com/urfave/cli/v2"
 	"strings"
 )
@@ -17,7 +17,7 @@ func add(ctx *cli.Context) error {
 
 	// select answer format type
 	var ans string
-	if err := survey.Ask(sshctl.MakeChoiceAddQuestion(), &ans); err != nil {
+	if err := survey.Ask(sshctl2.MakeChoiceAddQuestion(), &ans); err != nil {
 		return err
 	}
 
@@ -25,19 +25,19 @@ func add(ctx *cli.Context) error {
 	prefix := ans[:1]
 	config, err := getConfig(prefix)
 
-	client := sshctl.NewClient(configPath)
+	client := sshctl2.NewClient(configPath)
 	_, err = client.Put(config)
 	if err != nil {
 		return err
 	}
 
-	sshctl.ShowMessage(
+	sshctl2.ShowMessage(
 		"success",
 		fmt.Sprintf("config was created!! if you use that config setting, $ ssh %s", config.Host),
 		true, false,
 	)
 
-	sshctl.ShowMessage(
+	sshctl2.ShowMessage(
 		"",
 		fmt.Sprint("*if you want to use more options, please write directory."),
 		true, false,
@@ -46,8 +46,8 @@ func add(ctx *cli.Context) error {
 	return nil
 }
 
-func getConfig(prefix string) (*sshctl.Config, error) {
-	config := &sshctl.Config{}
+func getConfig(prefix string) (*sshctl2.Config, error) {
+	config := &sshctl2.Config{}
 	switch prefix {
 	case "0":
 		type addAnswer struct {
@@ -55,7 +55,7 @@ func getConfig(prefix string) (*sshctl.Config, error) {
 		}
 		a := addAnswer{}
 
-		err := survey.Ask(sshctl.MakeAddQuestionByCommandLine(), &a)
+		err := survey.Ask(sshctl2.MakeAddQuestionByCommandLine(), &a)
 		if err != nil {
 			return nil, err
 		}
@@ -67,7 +67,7 @@ func getConfig(prefix string) (*sshctl.Config, error) {
 
 		config.Host = a.Host
 	case "1":
-		err := survey.Ask(sshctl.MakeAddQuestionByInteractive(), config)
+		err := survey.Ask(sshctl2.MakeAddQuestionByInteractive(), config)
 		if err != nil {
 			return nil, err
 		}
@@ -78,7 +78,7 @@ func getConfig(prefix string) (*sshctl.Config, error) {
 	return config, nil
 }
 
-func mapping(str string) (*sshctl.Config, error) {
+func mapping(str string) (*sshctl2.Config, error) {
 	splitted := strings.Split(str, " ")
 	if splitted[0] != "ssh" {
 		return nil, errors.New("please input ssh command")
@@ -89,11 +89,11 @@ func mapping(str string) (*sshctl.Config, error) {
 		return nil, errors.New("Please input 'username@hostname' after any options")
 	}
 
-	config := &sshctl.Config{}
+	config := &sshctl2.Config{}
 	config.User 	= userAndHostname[0]
 	config.HostName = userAndHostname[1]
 
-	f := sshctl.NewFlagStr(str)
+	f := sshctl2.NewFlagStr(str)
 	config.IdentityFile = f.Get("i")
 	config.Port		    = f.Get("p")
 

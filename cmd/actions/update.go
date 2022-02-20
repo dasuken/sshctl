@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/AlecAivazis/survey/v2"
-	"github.com/dasuken/sshctl"
+	sshctl2 "github.com/dasuken/sshctl/pkg/sshctl"
 	"github.com/urfave/cli/v2"
 	"os"
 	"strconv"
@@ -28,7 +28,7 @@ func update(ctx *cli.Context) error {
 	if err := createIfNotExists(configPath); err != nil {
 		return err
 	}
-	client := sshctl.NewClient(configPath)
+	client := sshctl2.NewClient(configPath)
 
 	configList, err := client.ReadAll()
 	if err != nil {
@@ -45,7 +45,7 @@ func update(ctx *cli.Context) error {
 		return fmt.Errorf("ca't access %d. Please less than %d", index, len(configList))
 	}
 
-	if err := survey.Ask(sshctl.MakeUpdateQuestion(&configList[index]), &configList[index]); err != nil {
+	if err := survey.Ask(sshctl2.MakeUpdateQuestion(&configList[index]), &configList[index]); err != nil {
 		return err
 	}
 
