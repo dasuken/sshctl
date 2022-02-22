@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"path/filepath"
 )
 
 func getDefaultConfigPath() (string, error) {
@@ -12,7 +13,8 @@ func getDefaultConfigPath() (string, error) {
 		return "", errors.New("Can't find $HOME environment")
 	}
 
-	configPath := fmt.Sprintf("%s/.ssh/config", homePath)
+
+	configPath := filepath.Join(homePath, ".ssh", "config")
 	if _, err := os.Stat(configPath); err != nil {
 		return "", fmt.Errorf("config path is not created. Please touch ~/.ssh/config")
 		//  or /etc/ssh/config
