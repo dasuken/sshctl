@@ -15,7 +15,7 @@ Download binary from release page
 ### add
 from command
 
-![alt](docs/add_commandline.png)
+![alt](docs/add_commandline2.png)
 
 or, use interactive option
 

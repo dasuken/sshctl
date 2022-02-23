@@ -30,8 +30,8 @@ var(
 				Prompt: &survey.Select{
 					Message: "select input format: ",
 					Options: []string{
-						"0: input by commandline (ex: ssh -i xxx.pem ec2-user@xxx)",
-						"1: input by interactive",
+						"0: input from ssh command (ex: ssh -i xxx.pem -p 22 ec2-user@xxx)",
+						"1: input from interactive",
 					},
 				},
 				Validate: survey.Required,
@@ -44,15 +44,15 @@ var(
 			{
 				Name: "Command",
 				Prompt: &survey.Input{
-					Message: "Enter ssh command: ",
-					Help: "example: ssh -i identity ec2-user@131.0.0.1. Available options are -p -i",
+					Message: "Input ssh command: ",
+					Help: "Available options are -p -i",
 				},
 				Validate: sshValidator,
 			},
 			{
 				Name: "Host",
 				Prompt: &survey.Input{
-					Message: "Enter unique label name as host: ",
+					Message: "unique label as host: ",
 				},
 				Validate: survey.Required,
 			},
